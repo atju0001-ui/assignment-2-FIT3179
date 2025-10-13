@@ -1,55 +1,116 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 820,
-  "height": 560,
-  "title": "Adults Overweight or Obese (%), Australia — AIHW Table S9 (2022)",
-  "projection": { "type": "equalEarth" },
+  "height": 420,
+  "title": "Overweight & Obesity — Adults vs Children (AIHW)",
+
+  "params": [
+    {
+      "name": "pPop",
+      "value": "Adults",
+      "bind": {"input": "select", "options": ["Adults", "Children and adolescents"], "name": "Population: "}
+    },
+    {
+      "name": "pMeasure",
+      "value": "Overweight or obese",
+      "bind": {
+        "input": "select",
+        "options": ["Obese", "Overweight but not obese", "Overweight or obese"],
+        "name": "Measure: "
+      }
+    }
+  ],
 
   "layer": [
     {
       "data": {
-        "url": "data/ne_110m.topojson",
-        "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
+        "url": "data/aihw_s2_phn_obesity.csv",
+        "format": { "type": "csv" }
       },
       "transform": [
-        { "filter": "lower(datum.properties.name) == 'australia'" }
+        {
+          "fold": [
+            "Men - Overweight but not obese (%)",
+            "Men - Obese (%)",
+            "Men - Overweight or obese (%)",
+            "Women - Overweight but not obese (%)",
+            "Women - Obese (%)",
+            "Women - Overweight or obese (%)",
+            "Persons - Overweight but not obese (%)",
+            "Persons - Obese (%)",
+            "Persons - Overweight or obese (%)"
+          ],
+          "as": ["Metric", "valRaw"]
+        },
+        { "calculate": "pMeasure + ' (%)'", "as": "MeasureSuffix" },
+        { "filter": "indexof(datum.Metric, datum.MeasureSuffix) >= 0" },
+        { "calculate": "replace(datum.Metric, ' - ' + datum.MeasureSuffix, '')", "as": "Group" },
+        { "calculate": "toNumber(replace(replace(toString(datum.valRaw), '%',''), ',','.'))", "as": "Percent" },
+        { "filter": "isValid(datum.Percent)" }
       ],
-      "mark": {
-        "type": "geoshape",
-        "fill": "#f2f2f2",
-        "stroke": "#888",
-        "strokeWidth": 0.7
+      "mark": { "type": "line", "point": true },
+      "encoding": {
+        "opacity": { "condition": { "test": "pPop === 'Adults'", "value": 1 }, "value": 0 },
+        "x": { "field": "Age group", "type": "ordinal", "title": "Age group" },
+        "y": { "field": "Percent", "type": "quantitative", "title": "Per cent" },
+        "color": { "field": "Group", "type": "nominal", "title": "Sex" },
+        "tooltip": [
+          { "field": "Group", "title": "Sex" },
+          { "field": "Age group", "title": "Age group" },
+          { "field": "Percent", "title": "Per cent", "format": ".1f" },
+          { "expr": "pMeasure", "title": "Measure" },
+          { "value": "Adults", "title": "Population" }
+        ]
       }
     },
+
     {
       "data": {
-        "url": "data/aihw_s9_phn_obesity_2022.csv",
+        "url": "data/aihw_s11_phn_obesity.csv",
         "format": { "type": "csv", "delimiter": ";" }
       },
-      "mark": "bar",
+      "transform": [
+        {
+          "fold": [
+            "Boys - Overweight but not obese (%)",
+            "Boys - Obese (%)",
+            "Boys - Overweight or obese (%)",
+            "Girls - Overweight but not obese (%)",
+            "Girls - Obese (%)",
+            "Girls - Overweight or obese (%)",
+            "All children - Overweight but not obese (%)",
+            "All children - Obese (%)",
+            "All children - Overweight or obese (%)"
+          ],
+          "as": ["Metric", "valRaw"]
+        },
+        { "calculate": "pMeasure + ' (%)'", "as": "MeasureSuffix" },
+        { "filter": "indexof(datum.Metric, datum.MeasureSuffix) >= 0" },
+        { "calculate": "replace(datum.Metric, ' - ' + datum.MeasureSuffix, '')", "as": "Group" },
+        { "calculate": "toNumber(replace(replace(toString(datum.valRaw), '%',''), ',','.'))", "as": "Percent" },
+        { "filter": "isValid(datum.Percent)" }
+      ],
+      "mark": { "type": "line", "point": true },
       "encoding": {
-        "x": {
-          "field": "state",
-          "type": "nominal",
-          "title": "State/Territory"
-        },
-        "y": {
-          "field": "age_std_pct",
-          "type": "quantitative",
-          "title": "Age-standardised (%)"
-        },
-        "color": {
-          "field": "state",
-          "type": "nominal",
-          "title": "State"
-        },
+        "opacity": { "condition": { "test": "pPop === 'Children and adolescents'", "value": 1 }, "value": 0 },
+        "x": { "field": "Age group", "type": "ordinal", "title": "Age group" },
+        "y": { "field": "Percent", "type": "quantitative", "title": "Per cent" },
+        "color": { "field": "Group", "type": "nominal", "title": "Group" },
         "tooltip": [
-          { "field": "phn_name", "title": "PHN Area" },
-          { "field": "state", "title": "State" },
-          { "field": "age_std_pct", "title": "Age-standardised (%)" },
-          { "field": "crude_pct", "title": "Crude (%)" }
+          { "field": "Group", "title": "Group" },
+          { "field": "Age group", "title": "Age group" },
+          { "field": "Percent", "title": "Per cent", "format": ".1f" },
+          { "expr": "pMeasure", "title": "Measure" },
+          { "value": "Children and adolescents", "title": "Population" }
         ]
       }
     }
-  ]
+  ],
+
+  "config": {
+    "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+    "legend": { "title": null },
+    "title": { "anchor": "start", "fontSize": 16 },
+    "view": { "stroke": null }
+  }
 }
