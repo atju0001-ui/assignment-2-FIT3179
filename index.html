@@ -3,59 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Obesity In Australia Analysis in the Neighbourhood</title>
+  <title>FIT3179 – Week 4: Two Visualisations (Draft)</title>
 
-
+  <!-- Load Vega libs from reliable CDN with cache-busters -->
   <script src="https://unpkg.com/vega@5/build/vega.min.js?v=1"></script>
   <script src="https://unpkg.com/vega-lite@5/build/vega-lite.min.js?v=1"></script>
   <script src="https://unpkg.com/vega-embed@6/build/vega-embed.min.js?v=1"></script>
 
   <style>
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: system-ui, Arial, sans-serif;
-      background: #fafafa;
-    }
-    h1 {
-      margin: 0 0 16px;
-      text-align: center;
-    }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 6px 16px rgba(0,0,0,.08);
-      margin: 16px auto;
-      max-width: 1000px;
-    }
-    .chart {
-      min-height: 320px;
-    }
-    .err {
-      display: none;
-      white-space: pre-wrap;
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: .9rem;
-      color: #9f1239;
-      background: #fff1f2;
-      border: 1px solid #fecdd3;
-      border-radius: 8px;
-      padding: 10px;
-    }
+    body{margin:0;padding:24px;font-family:system-ui,Arial,sans-serif;background:#fafafa}
+    h1{margin:0 0 16px;text-align:center}
+    .card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 6px 16px rgba(0,0,0,.08);margin:16px auto;max-width:1000px}
+    .chart{min-height:320px}
+    .err{display:none;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;color:#9f1239;background:#fff1f2;border:1px solid #fecdd3;border-radius:8px;padding:10px}
+    .ok{padding:8px 12px;border-radius:8px;background:#ecfdf5;color:#065f46;display:inline-block;margin:8px 0}
   </style>
 </head>
 <body>
   <h1>Obesity In Australia Analysis Relevance to the Neighbourhood</h1>
 
-  <!-- First visualisation -->
+
+
   <div class="card">
     <h2>Overweight and Obesity by Age Group &amp; Sex</h2>
     <div id="vis1" class="chart"></div>
     <div id="err1" class="err"></div>
   </div>
 
-  <!-- Second visualisation -->
   <div class="card">
     <h2>BMI Distribution (2011–12 vs 2022)</h2>
     <div id="vis2" class="chart"></div>
@@ -63,7 +37,10 @@
   </div>
 
   <script>
-    
+    // If JS runs, show the green badge
+    document.getElementById('ping').style.display = 'inline-block';
+
+    // Helper to show any error text under a chart
     function showErr(id, e){
       const el = document.getElementById(id);
       el.textContent = (e && (e.message || e)) + "";
@@ -71,16 +48,28 @@
       console.error(e);
     }
 
+    // Inline chart (no CSVs) — proves Vega libs loaded
+    const inlineSpec = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      width: "container", height: 160,
+      data: { values: [{x:1,y:2},{x:2,y:3},{x:3,y:1}] },
+      mark: "line",
+      encoding: { x:{field:"x",type:"quantitative"}, y:{field:"y",type:"quantitative"} }
+    };
+    vegaEmbed("#check", inlineSpec, { actions:false, renderer:"canvas" })
+      .catch(e => showErr("err0", e));
+
+    // Force fresh copies of your specs (bust browser cache)
     const spec1 = "js/age_sex_lines.json?v=" + Date.now();
     const spec2 = "js/bmi_density.json?v=" + Date.now();
 
-    // Embed both Vega-Lite charts
-    vegaEmbed("#vis1", spec1, { actions: false, renderer: "canvas" })
+    // Embed your two real specs
+    vegaEmbed("#vis1", spec1, { actions:false, renderer:"canvas" })
       .catch(e => showErr("err1", e));
 
-    vegaEmbed("#vis2", spec2, { actions: false, renderer: "canvas" })
+    vegaEmbed("#vis2", spec2, { actions:false, renderer:"canvas" })
       .catch(e => showErr("err2", e));
   </script>
 </body>
-</h
+</html>
 
