@@ -76,7 +76,7 @@
     },
     {
       "data": {
-        "url": "../data/aihw_s12_phn_obesity.csv",
+        "url": "data/aihw_s12_phn_obesity.csv",
         "format": {"type": "csv"}
       },
       "transform": [
