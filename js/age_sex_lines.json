@@ -24,7 +24,7 @@
   
     {
       "data": {
-        "url": "data/aihw_s2_phn_obesity.csv",
+        "url": "../data/aihw_s2_phn_obesity.csv",
         "format": { "type": "csv", "delimiter": ";" }
       },
       "transform": [
@@ -59,7 +59,7 @@
    
     {
       "data": {
-        "url": "data/aihw_s11_phn_obesity.csv",
+        "url": "../data/aihw_s11_phn_obesity.csv",
         "format": { "type": "csv", "delimiter": ";" }
       },
       "transform": [
