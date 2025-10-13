@@ -3,7 +3,7 @@
   "width": 900,
   "height": 420,
   "padding": { "top": 38, "left": 50, "right": 20, "bottom": 40 },
-  "title": "Distribution of BMI among persons aged 18+ (AIHW) — density-style",
+  "title": "Distribution of BMI among persons aged 18+ in 2022",
 
   "params": [
     { "name": "p2011", "value": true, "bind": { "input": "checkbox", "name": "2011–12 " } },
