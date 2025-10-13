@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 820,
   "height": 420,
-  "title": "Overweight & Obesity — Adults vs Children (AIHW)",
+  "title": "Overweight & Obesity — Adults vs Children in Australia in 2022",
 
   "params": [
     {
