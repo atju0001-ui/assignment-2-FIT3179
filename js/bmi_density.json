@@ -1,0 +1,158 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 420,
+  "padding": { "top": 38, "left": 50, "right": 20, "bottom": 40 },
+  "title": "Distribution of BMI among persons aged 18+ (AIHW) — density-style",
+
+  "params": [
+    { "name": "p2011", "value": true, "bind": { "input": "checkbox", "name": "2011–12 " } },
+    { "name": "p2022", "value": true, "bind": { "input": "checkbox", "name": "2022 " } }
+  ],
+
+  "layer": [
+
+
+    {
+      "data": {
+        "values": [
+          { "x0": 16.0, "x1": 18.5, "cat": "Underweight",   "fill": "#fde68a" },
+          { "x0": 18.5, "x1": 25.0, "cat": "Normal weight", "fill": "#bfdbfe" },
+          { "x0": 25.0, "x1": 30.0, "cat": "Overweight",    "fill": "#fed7aa" },
+          { "x0": 30.0, "x1": 50.0, "cat": "Obese",         "fill": "#fecdd3" }
+        ]
+      },
+      "layer": [
+        {
+          "mark": { "type": "rect", "opacity": 0.35, "stroke": null },
+          "encoding": {
+            "x":  { "field": "x0", "type": "quantitative", "scale": { "domain": [16, 50] } },
+            "x2": { "field": "x1" },
+            "y":  { "value": 17.05 },
+            "y2": { "value": 18 },
+            "color": { "field": "fill", "type": "nominal", "scale": null }
+          }
+        },
+        {
+          "transform": [{ "calculate": "(datum.x0 + datum.x1) / 2", "as": "xm" }],
+          "mark": { "type": "text", "fontSize": 12, "color": "#374151" },
+          "encoding": {
+            "x": { "field": "xm", "type": "quantitative", "scale": { "domain": [16, 50] } },
+            "y": { "value": 16.85 },
+            "text": { "field": "cat" }
+          }
+        },
+        {
+         
+          "data": { "values": [ { "x": 18.5 }, { "x": 25 }, { "x": 30 } ] },
+          "mark": { "type": "rule", "strokeDash": [4, 4], "strokeWidth": 1.5, "color": "#6b7280" },
+          "encoding": {
+            "x":  { "field": "x", "type": "quantitative", "scale": { "domain": [16, 50] } },
+            "y":  { "value": 0 },
+            "y2": { "value": 17.05 }
+          }
+        }
+      ]
+    },
+
+  
+    {
+      "data": {
+        "url": "aihw_s12_phn_obesity.csv",
+        "format": { "type": "csv" }
+      },
+      "transform": [
+        {
+          "lookup": "BMI Range",
+          "from": {
+            "data": {
+              "values": [
+                {"key": "Less than 18.5", "mid": 17.5},
+                {"key": "18.5 to less than 20.5", "mid": 19.5},
+                {"key": "20.5 to less than 22.5", "mid": 21.5},
+                {"key": "22.5 to less than 24.5", "mid": 23.5},
+                {"key": "24.5 to less than 26.5", "mid": 25.5},
+                {"key": "26.5 to less than 28.5", "mid": 27.5},
+                {"key": "28.5 to less than 30.5", "mid": 29.5},
+                {"key": "30.5 to less than 32.5", "mid": 31.5},
+                {"key": "32.5 to less than 34.5", "mid": 33.5},
+                {"key": "34.5 to less than 36.5", "mid": 35.5},
+                {"key": "36.5 to less than 38.5", "mid": 37.5},
+                {"key": "38.5 to less than 40.5", "mid": 39.5},
+                {"key": "40.5 to less than 42.5", "mid": 41.5},
+                {"key": "42.5 to less than 44.5", "mid": 43.5},
+                {"key": "44.5 to less than 46.5", "mid": 45.5},
+                {"key": "46.5 or more", "mid": 47.5}
+              ]
+            },
+            "key": "key",
+            "fields": ["mid"]
+          },
+          "as": ["BMIMid"]
+        }
+      ],
+      "layer": [
+        {
+          "transform": [{ "filter": "datum.Year == '2011–12'" }],
+          "mark": { "type": "area", "interpolate": "monotone" },
+          "encoding": {
+            "opacity": { "condition": { "test": "p2011", "value": 0.25 }, "value": 0 },
+            "x": { "field": "BMIMid", "type": "quantitative", "title": "BMI", "scale": { "domain": [16, 50] } },
+            "y": { "field": "Percent", "type": "quantitative", "title": "Per cent", "scale": { "domain": [0, 18] } },
+            "color": { "value": "#1f77b4" }
+          }
+        },
+        {
+          "transform": [{ "filter": "datum.Year == '2011–12'" }],
+          "mark": { "type": "line", "interpolate": "monotone", "strokeWidth": 2 },
+          "encoding": {
+            "opacity": { "condition": { "test": "p2011", "value": 1 }, "value": 0 },
+            "x": { "field": "BMIMid", "type": "quantitative", "scale": { "domain": [16, 50] } },
+            "y": { "field": "Percent", "type": "quantitative", "scale": { "domain": [0, 18] } },
+            "color": { "value": "#1f77b4" },
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "BMI Range", "title": "BMI range" },
+              { "field": "Percent", "title": "Per cent", "format": ".1f" },
+              { "field": "CI Lower", "title": "95% CI (low)", "format": ".1f" },
+              { "field": "CI Upper", "title": "95% CI (high)", "format": ".1f" }
+            ]
+          }
+        },
+        {
+          "transform": [{ "filter": "datum.Year == '2022'" }],
+          "mark": { "type": "area", "interpolate": "monotone" },
+          "encoding": {
+            "opacity": { "condition": { "test": "p2022", "value": 0.25 }, "value": 0 },
+            "x": { "field": "BMIMid", "type": "quantitative", "scale": { "domain": [16, 50] } },
+            "y": { "field": "Percent", "type": "quantitative", "scale": { "domain": [0, 18] } },
+            "color": { "value": "#ff7f0e" }
+          }
+        },
+        {
+          "transform": [{ "filter": "datum.Year == '2022'" }],
+          "mark": { "type": "line", "interpolate": "monotone", "strokeWidth": 2 },
+          "encoding": {
+            "opacity": { "condition": { "test": "p2022", "value": 1 }, "value": 0 },
+            "x": { "field": "BMIMid", "type": "quantitative", "scale": { "domain": [16, 50] } },
+            "y": { "field": "Percent", "type": "quantitative", "scale": { "domain": [0, 18] } },
+            "color": { "value": "#ff7f0e" },
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "BMI Range", "title": "BMI range" },
+              { "field": "Percent", "title": "Per cent", "format": ".1f" },
+              { "field": "CI Lower", "title": "95% CI (low)", "format": ".1f" },
+              { "field": "CI Upper", "title": "95% CI (high)", "format": ".1f" }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+
+  "config": {
+    "axis": { "labelFontSize": 11, "titleFontSize": 12, "grid": true },
+    "legend": { "title": "" },
+    "view": { "stroke": null }
+  }
+}
