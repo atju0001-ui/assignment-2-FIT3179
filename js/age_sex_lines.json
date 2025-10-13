@@ -1,0 +1,101 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 720,
+  "height": 380,
+  "title": "Overweight or Obesity by Age Group & Sex (2022)",
+  "params": [
+    {
+      "name": "pPop",
+      "value": "Adults",
+      "bind": { "input": "select", "options": ["Adults", "Children and adolescents"], "name": "Population: " }
+    },
+    {
+      "name": "pMeasure",
+      "value": "Overweight or obese",
+      "bind": {
+        "input": "select",
+        "options": ["Obese", "Overweight but not obese", "Overweight or obese"],
+        "name": "Measure: "
+      }
+    }
+  ],
+
+  "layer": [
+  
+    {
+      "data": {
+        "url": "data/aihw_s2_phn_obesity.csv",
+        "format": { "type": "csv", "delimiter": ";" }
+      },
+      "transform": [
+        { "calculate": "datum[pMeasure]", "as": "val_raw" },
+        { "calculate": "toNumber(replace(datum.val_raw, ',', '.'))", "as": "percent" },
+        { "filter": "isValid(datum.percent)" }
+      ],
+      "mark": { "type": "line", "point": true },
+      "encoding": {
+        "x": {
+          "field": "AgeGroup",
+          "type": "ordinal",
+          "title": "Age group",
+          "sort": ["2–4","5–7","8–11","12–15","16–17","2–17","18–24","25–34","35–44","45–54","55–64","65–74","75+","18+"]
+        },
+        "y": { "field": "percent", "type": "quantitative", "title": "Per cent" },
+        "color": { "field": "Sex", "type": "nominal" },
+        "opacity": {
+          "condition": { "test": "pPop === 'Adults'", "value": 1 },
+          "value": 0
+        },
+        "tooltip": [
+          { "field": "Sex" },
+          { "field": "AgeGroup", "title": "Age group" },
+          { "field": "percent", "title": "Percent", "format": ".1f" },
+          { "value": "Adults", "title": "Population" },
+          { "expr": "pMeasure", "title": "Measure" }
+        ]
+      }
+    },
+
+   
+    {
+      "data": {
+        "url": "data/aihw_s11_phn_obesity.csv",
+        "format": { "type": "csv", "delimiter": ";" }
+      },
+      "transform": [
+        { "calculate": "datum[pMeasure]", "as": "val_raw" },
+        { "calculate": "toNumber(replace(datum.val_raw, ',', '.'))", "as": "percent" },
+        { "filter": "isValid(datum.percent)" }
+      ],
+      "mark": { "type": "line", "point": true },
+      "encoding": {
+        "x": {
+          "field": "AgeGroup",
+          "type": "ordinal",
+          "title": "Age group",
+          "sort": ["2–4","5–7","8–11","12–15","16–17","2–17","18–24","25–34","35–44","45–54","55–64","65–74","75+","18+"]
+        },
+        "y": { "field": "percent", "type": "quantitative", "title": "Per cent" },
+        "color": { "field": "Sex", "type": "nominal" },
+        "opacity": {
+          "condition": { "test": "pPop === 'Children and adolescents'", "value": 1 },
+          "value": 0
+        },
+        "tooltip": [
+          { "field": "Sex" },
+          { "field": "AgeGroup", "title": "Age group" },
+          { "field": "percent", "title": "Percent", "format": ".1f" },
+          { "value": "Children and adolescents", "title": "Population" },
+          { "expr": "pMeasure", "title": "Measure" }
+        ]
+      }
+    }
+  ],
+
+  "config": {
+    "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+    "legend": { "title": null },
+    "view": { "stroke": null },
+    "title": { "anchor": "start", "fontSize": 16 }
+  }
+}
