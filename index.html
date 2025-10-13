@@ -2,93 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>FIT3179 – Two Visualisations (Stacked)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Obesity In Australia Analysis in the Neighbourhood</title>
 
-  <!-- Vega Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <script src="https://unpkg.com/vega@5/build/vega.min.js?v=1"></script>
+  <script src="https://unpkg.com/vega-lite@5/build/vega-lite.min.js?v=1"></script>
+  <script src="https://unpkg.com/vega-embed@6/build/vega-embed.min.js?v=1"></script>
 
   <style>
-    :root { --gap: 16px; }
-    * { box-sizing: border-box; }
     body {
+      margin: 0;
+      padding: 24px;
       font-family: system-ui, Arial, sans-serif;
-      margin: 0; padding: 24px;
       background: #fafafa;
     }
-    header h1 { margin: 0 0 6px; font-size: 1.5rem; }
-    header p { margin: 0 0 20px; color:#555; }
-    .stack { display: flex; flex-direction: column; gap: var(--gap); }
+    h1 {
+      margin: 0 0 16px;
+      text-align: center;
+    }
     .card {
       background: #fff;
       border-radius: 12px;
       padding: 16px;
       box-shadow: 0 6px 16px rgba(0,0,0,.08);
-      min-height: 420px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      margin: 16px auto;
+      max-width: 1000px;
     }
-    .card h2 { margin: 0; font-size: 1.1rem; }
-    .chart { min-height: 360px; }
-    .note { font-size: 0.9rem; color: #666; }
+    .chart {
+      min-height: 320px;
+    }
     .err {
       display: none;
       white-space: pre-wrap;
       font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: 0.85rem;
+      font-size: .9rem;
       color: #9f1239;
       background: #fff1f2;
       border: 1px solid #fecdd3;
       border-radius: 8px;
       padding: 10px;
     }
-    footer { margin-top: 28px; font-size: 0.9rem; color:#666; }
   </style>
 </head>
-
 <body>
-  <header>
-    <h1>FIT3179 – Two Visualisations</h1>
-    <p>Interactive charts embedded with Vega-Lite (vertical scroll).</p>
-  </header>
+  <h1>Obesity In Australia Analysis in the Neighbourhood</h1>
 
-  <main class="stack">
-    <section class="card">
-      <h2>Overweight/Obesity by Age Group &amp; Sex</h2>
-      <div id="vis1" class="chart"></div>
-      <div id="vis1-error" class="err"></div>
-      <p class="note">Use the Population &amp; Measure controls inside the chart.</p>
-    </section>
+  <!-- First visualisation -->
+  <div class="card">
+    <h2>Overweight and Obesity by Age Group &amp; Sex</h2>
+    <div id="vis1" class="chart"></div>
+    <div id="err1" class="err"></div>
+  </div>
 
-    <section class="card">
-      <h2>BMI Distribution (2011–12 vs 2022)</h2>
-      <div id="vis2" class="chart"></div>
-      <div id="vis2-error" class="err"></div>
-      <p class="note">Dashed rules mark BMI category thresholds.</p>
-    </section>
-  </main>
-
-  <footer>CSV files are located in <code>/data</code>, and JSON specs in <code>/js</code>.</footer>
+  <!-- Second visualisation -->
+  <div class="card">
+    <h2>BMI Distribution (2011–12 vs 2022)</h2>
+    <div id="vis2" class="chart"></div>
+    <div id="err2" class="err"></div>
+  </div>
 
   <script>
-    // --- Helper to show errors ---
-    function showError(id, err){
-      const el=document.getElementById(id);
-      el.textContent=(err?.message||err)+"";
-      el.style.display="block";
-      console.error(err);
+    
+    function showErr(id, e){
+      const el = document.getElementById(id);
+      el.textContent = (e && (e.message || e)) + "";
+      el.style.display = "block";
+      console.error(e);
     }
 
-    // --- Load your 2 Vega-Lite specs from /js ---
-    vegaEmbed("#vis1", "js/age_sex_lines.json", { actions:false, renderer:"canvas" })
-      .catch(err => showError("vis1-error", err));
+    const spec1 = "js/age_sex_lines.json?v=" + Date.now();
+    const spec2 = "js/bmi_density.json?v=" + Date.now();
 
-    vegaEmbed("#vis2", "js/bmi_density.json", { actions:false, renderer:"canvas" })
-      .catch(err => showError("vis2-error", err));
+    // Embed both Vega-Lite charts
+    vegaEmbed("#vis1", spec1, { actions: false, renderer: "canvas" })
+      .catch(e => showErr("err1", e));
+
+    vegaEmbed("#vis2", spec2, { actions: false, renderer: "canvas" })
+      .catch(e => showErr("err2", e));
   </script>
 </body>
-</html>
+</h
 

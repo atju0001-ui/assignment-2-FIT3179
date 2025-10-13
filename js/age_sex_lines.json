@@ -3,15 +3,12 @@
   "width": 820,
   "height": 420,
   "title": "Overweight & Obesity — Adults vs Children (AIHW)",
+
   "params": [
     {
       "name": "pPop",
       "value": "Adults",
-      "bind": {
-        "input": "select",
-        "options": ["Adults", "Children and adolescents"],
-        "name": "Population: "
-      }
+      "bind": {"input": "select", "options": ["Adults", "Children and adolescents"], "name": "Population: "}
     },
     {
       "name": "pMeasure",
@@ -23,11 +20,12 @@
       }
     }
   ],
+
   "layer": [
     {
       "data": {
-        "url": "https://raw.githubusercontent.com/atju0001-ui/assignment-2-FIT3179/refs/heads/main/data/aihw_s2_phn_obesity.csv",
-        "format": {"type": "csv"}
+        "url": "../data/aihw_s2_phn_obesity.csv",
+        "format": { "type": "csv" }
       },
       "transform": [
         {
@@ -44,40 +42,32 @@
           ],
           "as": ["Metric", "valRaw"]
         },
-        {"calculate": "pMeasure + ' (%)'", "as": "MeasureSuffix"},
-        {"filter": "indexof(datum.Metric, datum.MeasureSuffix) >= 0"},
-        {
-          "calculate": "replace(datum.Metric, ' - ' + datum.MeasureSuffix, '')",
-          "as": "Group"
-        },
-        {
-          "calculate": "toNumber(replace(replace(toString(datum.valRaw), '%',''), ',','.'))",
-          "as": "Percent"
-        },
-        {"filter": "isValid(datum.Percent)"}
+        { "calculate": "pMeasure + ' (%)'", "as": "MeasureSuffix" },
+        { "filter": "indexof(datum.Metric, datum.MeasureSuffix) >= 0" },
+        { "calculate": "replace(datum.Metric, ' - ' + datum.MeasureSuffix, '')", "as": "Group" },
+        { "calculate": "toNumber(replace(replace(toString(datum.valRaw), '%',''), ',','.'))", "as": "Percent" },
+        { "filter": "isValid(datum.Percent)" }
       ],
-      "mark": {"type": "line", "point": true},
+      "mark": { "type": "line", "point": true },
       "encoding": {
-        "opacity": {
-          "condition": {"test": "pPop === 'Adults'", "value": 1},
-          "value": 0
-        },
-        "x": {"field": "Age group", "type": "ordinal", "title": "Age group"},
-        "y": {"field": "Percent", "type": "quantitative", "title": "Per cent"},
-        "color": {"field": "Group", "type": "nominal", "title": "Sex"},
+        "opacity": { "condition": { "test": "pPop === 'Adults'", "value": 1 }, "value": 0 },
+        "x": { "field": "Age group", "type": "ordinal", "title": "Age group" },
+        "y": { "field": "Percent", "type": "quantitative", "title": "Per cent" },
+        "color": { "field": "Group", "type": "nominal", "title": "Sex" },
         "tooltip": [
-          {"field": "Group", "title": "Sex"},
-          {"field": "Age group", "title": "Age group"},
-          {"field": "Percent", "title": "Per cent", "format": ".1f"},
-          {"expr": "pMeasure", "title": "Measure"},
-          {"value": "Adults", "title": "Population"}
+          { "field": "Group", "title": "Sex" },
+          { "field": "Age group", "title": "Age group" },
+          { "field": "Percent", "title": "Per cent", "format": ".1f" },
+          { "expr": "pMeasure", "title": "Measure" },
+          { "value": "Adults", "title": "Population" }
         ]
       }
     },
+
     {
       "data": {
-        "url": "https://raw.githubusercontent.com/atju0001-ui/assignment-2-FIT3179/refs/heads/main/data/aihw_s11_phn_obesity.csv",
-        "format": {"type": "csv", "delimiter": ";"}
+        "url": "../data/aihw_s11_phn_obesity.csv",
+        "format": { "type": "csv", "delimiter": ";" }
       },
       "transform": [
         {
@@ -94,44 +84,33 @@
           ],
           "as": ["Metric", "valRaw"]
         },
-        {"calculate": "pMeasure + ' (%)'", "as": "MeasureSuffix"},
-        {"filter": "indexof(datum.Metric, datum.MeasureSuffix) >= 0"},
-        {
-          "calculate": "replace(datum.Metric, ' - ' + datum.MeasureSuffix, '')",
-          "as": "Group"
-        },
-        {
-          "calculate": "toNumber(replace(replace(toString(datum.valRaw), '%',''), ',','.'))",
-          "as": "Percent"
-        },
-        {"filter": "isValid(datum.Percent)"}
+        { "calculate": "pMeasure + ' (%)'", "as": "MeasureSuffix" },
+        { "filter": "indexof(datum.Metric, datum.MeasureSuffix) >= 0" },
+        { "calculate": "replace(datum.Metric, ' - ' + datum.MeasureSuffix, '')", "as": "Group" },
+        { "calculate": "toNumber(replace(replace(toString(datum.valRaw), '%',''), ',','.'))", "as": "Percent" },
+        { "filter": "isValid(datum.Percent)" }
       ],
-      "mark": {"type": "line", "point": true},
+      "mark": { "type": "line", "point": true },
       "encoding": {
-        "opacity": {
-          "condition": {
-            "test": "pPop === 'Children and adolescents'",
-            "value": 1
-          },
-          "value": 0
-        },
-        "x": {"field": "Age group", "type": "ordinal", "title": "Age group"},
-        "y": {"field": "Percent", "type": "quantitative", "title": "Per cent"},
-        "color": {"field": "Group", "type": "nominal", "title": "Group"},
+        "opacity": { "condition": { "test": "pPop === 'Children and adolescents'", "value": 1 }, "value": 0 },
+        "x": { "field": "Age group", "type": "ordinal", "title": "Age group" },
+        "y": { "field": "Percent", "type": "quantitative", "title": "Per cent" },
+        "color": { "field": "Group", "type": "nominal", "title": "Group" },
         "tooltip": [
-          {"field": "Group", "title": "Group"},
-          {"field": "Age group", "title": "Age group"},
-          {"field": "Percent", "title": "Per cent", "format": ".1f"},
-          {"expr": "pMeasure", "title": "Measure"},
-          {"value": "Children and adolescents", "title": "Population"}
+          { "field": "Group", "title": "Group" },
+          { "field": "Age group", "title": "Age group" },
+          { "field": "Percent", "title": "Per cent", "format": ".1f" },
+          { "expr": "pMeasure", "title": "Measure" },
+          { "value": "Children and adolescents", "title": "Population" }
         ]
       }
     }
   ],
+
   "config": {
-    "axis": {"labelFontSize": 11, "titleFontSize": 12},
-    "legend": {"title": null},
-    "title": {"anchor": "start", "fontSize": 16},
-    "view": {"stroke": null}
+    "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+    "legend": { "title": null },
+    "title": { "anchor": "start", "fontSize": 16 },
+    "view": { "stroke": null }
   }
 }
