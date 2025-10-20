@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FIT3179 – Week 4: Two Visualisations (Draft)</title>
+  <title>FIT3179 – Obesity in Australia Visualisations</title>
 
   
   <script src="https://unpkg.com/vega@5/build/vega.min.js?v=1"></script>
@@ -18,8 +18,14 @@
       background: #fafafa;
     }
     h1 {
-      margin: 0 0 16px;
+      margin: 0 0 8px;
       text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 1rem;
+      color: #374151;
+      margin-bottom: 24px;
     }
     .card {
       background: #fff;
@@ -46,24 +52,34 @@
   </style>
 </head>
 <body>
-  <h1>Obesity in Australia Relevance To The Neighbourhood</h1>
+  <h1>Obesity in Australia – Relevance to the Neighbourhood</h1>
+  <div class="subtitle">Albert Tjugiarto — Student ID: 34726845</div>
 
-  
-  <div class="card">
-    <h2>Overweight and Obesity by Age Group &amp; Sex</h2>
+  <div class="card" id="card1">
+    <h2>Crude Obesity — States &amp; PHN Areas (Adults, 2022)</h2>
     <div id="vis1" class="chart"></div>
     <div id="err1" class="err"></div>
   </div>
 
-
-  <div class="card">
-    <h2>BMI Distribution (2011–12 vs 2022)</h2>
+  <div class="card" id="card2">
+    <h2>Overweight and Obesity by Age Group &amp; Sex</h2>
     <div id="vis2" class="chart"></div>
     <div id="err2" class="err"></div>
   </div>
 
+  <div class="card" id="card3">
+    <h2>BMI Distribution (2011–12 vs 2022)</h2>
+    <div id="vis3" class="chart"></div>
+    <div id="err3" class="err"></div>
+  </div>
+
+  <div class="card" id="card4">
+    <h2>Access to Food Retail by Socio-Economic Disadvantage</h2>
+    <div id="vis4" class="chart"></div>
+    <div id="err4" class="err"></div>
+  </div>
+
   <script>
-    
     function showErr(id, e){
       const el = document.getElementById(id);
       el.textContent = (e && (e.message || e)) + "";
@@ -71,16 +87,25 @@
       console.error(e);
     }
 
-   
-    const spec1 = "js/age_sex_lines.json?v=" + Date.now();
-    const spec2 = "js/bmi_density.json?v=" + Date.now();
+    const bust = "?v=" + Date.now();
 
-  
+    
+    const spec1 = "js/phn_obesity_map.json" + bust;
+    const spec2 = "js/age_sex_lines.json" + bust;
+    const spec3 = "js/bmi_density.json" + bust;
+    const spec4 = "js/access_food_disadvantage.json" + bust;
+
     vegaEmbed("#vis1", spec1, { actions: false, renderer: "canvas" })
       .catch(e => showErr("err1", e));
 
     vegaEmbed("#vis2", spec2, { actions: false, renderer: "canvas" })
       .catch(e => showErr("err2", e));
+
+    vegaEmbed("#vis3", spec3, { actions: false, renderer: "canvas" })
+      .catch(e => showErr("err3", e));
+
+    vegaEmbed("#vis4", spec4, { actions: false, renderer: "canvas" })
+      .catch(e => showErr("err4", e));
   </script>
 </body>
 </html>
