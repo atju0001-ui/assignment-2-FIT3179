@@ -23,7 +23,7 @@
    
     {
       "data": {
-        "url": "Data/aihw_s2_phn_obesity.csv",
+        "url": "data/aihw_s2_phn_obesity.csv",
         "format": { "type": "csv" }
       },
       "transform": [
@@ -73,7 +73,7 @@
     
     {
       "data": {
-        "url": "Data/aihw_s11_phn_obesity.csv",
+        "url": "data/aihw_s11_phn_obesity.csv",
         "format": { "type": "csv" }   
       },
       "transform": [
@@ -185,7 +185,7 @@
       },
       "encoding": {
         "x":  { "value": 520 },   
-        "x2": { "value": 810 },   
+        "x2": { "value": 838 },   
         "y":  { "value": 275 },   
         "y2": { "value": 410 }    
       }
@@ -205,7 +205,7 @@
       "encoding": {
         "x": { "value": 530 },
         "y": { "value": 285 },
-        "text": { "value": "WEIGHT STATUS    BMI (kg/m²)" }
+        "text": { "value": "SUMMARY" }
       }
     },
 
@@ -225,7 +225,8 @@
         "y": { "value": 305 },
         "text": {
           "value":
-"Underweight:       < 18.5\nNormal range:    18.5–24.9\nOverweight:      25.0–29.9\nObese:                 ≥ 30"
+"Overweight and obesity increase sharply with age.\nAdults show the highest combined rates after 45,\nreaching over 70% by age 55–64.\nChildren’s rates are lower overall but rise steadily\nthrough adolescence, peaking around 12–17 years.\nMales generally record slightly higher levels than females."
+
         }
       }
     }
