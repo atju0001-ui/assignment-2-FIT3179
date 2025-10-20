@@ -1,0 +1,153 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 720,
+  "height": 260,
+  "padding": 8,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "title": {"text": "Access to Food Retail by Socio-Economic Disadvantage", "anchor": "start", "fontSize": 16},
+
+  "params": [
+    {
+      "name": "pType",
+      "value": "Supermarket",
+      "bind": {"input": "select", "options": ["Supermarket", "Fast food outlet"], "name": "Outlet type: "}
+    }
+  ],
+
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"labelFontSize": 13, "titleFontSize": 14, "titlePadding": 8, "grid": true},
+    "legend": {"title": "Distance band", "labelFontSize": 12, "titleFontSize": 13}
+  },
+
+  "layer": [
+    
+    {
+      "data": {
+        "url": "data/access_fast_food_outlet_disadvantage.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+        { "filter": "pType === 'Fast food outlet'" },
+        { "calculate": "(datum['Socio-Economic Disadvantage'] || datum['\\uFEFFSocio-Economic Disadvantage'])", "as": "SED" },
+
+        { 
+          "calculate": "datum.SED==='First Quintile' ? 'Most disadvantaged areas' : datum.SED==='Second Quintile' ? 'Disadvantaged areas' : datum.SED==='Third Quintile' ? 'Moderate disadvantage' : datum.SED==='Fourth Quintile' ? 'Advantaged areas' : datum.SED==='Fifth Quintile' ? 'Most advantaged areas' : datum.SED",
+          "as": "SEDLabel"
+        },
+
+        { "filter": "datum.SED && datum.SED != ''" },
+        {
+          "fold": [
+            "Access to a fast food outlet within 1500m (%)",
+            "Access to a fast food outlet within 1000m (%)"
+          ],
+          "as": ["DistanceRaw","Percent"]
+        },
+        { "filter": "datum.Percent && datum.Percent != ''" },
+        { "calculate": "indexof(lower(datum.DistanceRaw),'1500')>=0 ? '1500 m' : '1000 m'", "as": "Distance" },
+        { "calculate": "toNumber(datum.Percent)", "as": "PercentNum" },
+        { "calculate": "datum.Distance === '1000 m' ? -datum.PercentNum : datum.PercentNum", "as": "Diverge" }
+      ],
+      "encoding": {
+        "y": {
+          "field": "SEDLabel",
+          "type": "ordinal",
+          "title": "Socio-Economic Disadvantage",
+          "sort": ["Most disadvantaged areas","Disadvantaged areas","Moderate disadvantage","Advantaged areas","Most advantaged areas"]
+        },
+        "x": {
+          "field": "Diverge",
+          "type": "quantitative",
+          "title": "Access (%)",
+          "scale": {"domain": [-50, 70]},
+          "axis": {
+            "values": [-50,-40,-30,-20,-10,0,10,20,30,40,50,60,70],
+            "labelExpr": "format(abs(datum.value), '.0f')"
+          }
+        },
+        "color": {
+          "field": "Distance",
+          "type": "nominal",
+          "scale": {"domain": ["1000 m","1500 m"], "range": ["#3b82f6","#facc15"]}
+        },
+        "tooltip": [
+          {"field": "SEDLabel", "title": "Disadvantage level"},
+          {"field": "Distance"},
+          {"field": "PercentNum", "title": "Percent", "format": ".1f"},
+          {"value": "Fast food outlet", "title": "Type"}
+        ]
+      },
+      "mark": {"type": "bar"}
+    },
+
+    
+    {
+      "data": {
+        "url": "data/access_supermarket_disadvantage.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+        { "filter": "pType === 'Supermarket'" },
+        { "calculate": "(datum['Socio-Economic Disadvantage'] || datum['\\uFEFFSocio-Economic Disadvantage'])", "as": "SED" },
+
+        { 
+          "calculate": "datum.SED==='First Quintile' ? 'Most disadvantaged areas' : datum.SED==='Second Quintile' ? 'Disadvantaged areas' : datum.SED==='Third Quintile' ? 'Moderate disadvantage' : datum.SED==='Fourth Quintile' ? 'Advantaged areas' : datum.SED==='Fifth Quintile' ? 'Most advantaged areas' : datum.SED",
+          "as": "SEDLabel"
+        },
+
+        { "filter": "datum.SED && datum.SED != ''" },
+        {
+          "fold": [
+            "Access to a supermarket within 1500M (%)",
+            "Access to a supermarket within 1000M (%)",
+            "Access to a supermarket within 1500m (%)",
+            "Access to a supermarket within 1000m (%)"
+          ],
+          "as": ["DistanceRaw","Percent"]
+        },
+        { "filter": "datum.Percent && datum.Percent != ''" },
+        { "calculate": "indexof(lower(datum.DistanceRaw),'1500')>=0 ? '1500 m' : '1000 m'", "as": "Distance" },
+        { "calculate": "toNumber(datum.Percent)", "as": "PercentNum" },
+        { "calculate": "datum.Distance === '1000 m' ? -datum.PercentNum : datum.PercentNum", "as": "Diverge" }
+      ],
+      "encoding": {
+        "y": {
+          "field": "SEDLabel",
+          "type": "ordinal",
+          "title": "Socio-Economic Disadvantage",
+          "sort": ["Most disadvantaged areas","Disadvantaged areas","Moderate disadvantage","Advantaged areas","Most advantaged areas"]
+        },
+        "x": {
+          "field": "Diverge",
+          "type": "quantitative",
+          "title": "Access (%)",
+          "scale": {"domain": [-50, 70]},
+          "axis": {
+            "values": [-50,-40,-30,-20,-10,0,10,20,30,40,50,60,70],
+            "labelExpr": "format(abs(datum.value), '.0f')"
+          }
+        },
+        "color": {
+          "field": "Distance",
+          "type": "nominal",
+          "scale": {"domain": ["1000 m","1500 m"], "range": ["#3b82f6","#facc15"]}
+        },
+        "tooltip": [
+          {"field": "SEDLabel", "title": "Disadvantage level"},
+          {"field": "Distance"},
+          {"field": "PercentNum", "title": "Percent", "format": ".1f"},
+          {"value": "Supermarket", "title": "Type"}
+        ]
+      },
+      "mark": {"type": "bar"}
+    },
+
+   
+    {
+      "data": {"values": [{}]},
+      "mark": {"type": "rule", "color": "#111", "strokeWidth": 1},
+      "encoding": {"x": {"datum": 0}, "y": {"value": 0}, "y2": {"value": 260}}
+    }
+  ]
+}
