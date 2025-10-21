@@ -1,0 +1,69 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 420,
+  "height": 280,
+  "title": {"text": "Access to Food Retail by Socio-Economic Disadvantage", "anchor": "start", "fontSize": 16},
+
+  "params": [
+    {"name": "pBMI", "value": "Normal",
+     "bind": {"input": "select", "name": "BMI category: ", "options": ["Normal","Overweight","Obese"]}}
+  ],
+
+  "data": {"url": "data/bmi_1500m.csv", "format": {"type": "csv"}},
+
+  "transform": [
+    {"filter": "datum['Body Mass Index category'] === pBMI"},
+    {"fold": ["Has access to a fast food outlet within 1500M (%)","No access to a fast food outlet within 1500M (%)"],
+     "as": ["AccessType","Percent"]},
+    {"calculate": "toNumber(datum.Percent)", "as": "PercentNum"}
+  ],
+
+  "layer": [
+    {
+      "mark": {"type": "arc", "innerRadius": 80},
+      "encoding": {
+        "theta": {"field": "PercentNum", "type": "quantitative"},
+        "color": {
+          "field": "AccessType", "type": "nominal", "title": "Access within 1500m",
+          "scale": {
+            "domain": ["Has access to a fast food outlet within 1500M (%)","No access to a fast food outlet within 1500M (%)"],
+            "range": ["#facc15","#fb923c"]
+          },
+          "legend": {"orient": "right", "labelFontSize": 12, "titleFontSize": 13, "labelLimit": 400}
+        },
+        "tooltip": [
+          {"field": "AccessType", "title": "Access Type"},
+          {"field": "PercentNum", "title": "Percent", "format": ".1f"}
+        ]
+      }
+    },
+
+    
+    {
+      "transform": [{"filter": "datum.AccessType === 'Has access to a fast food outlet within 1500M (%)'"}],
+      "mark": {"type": "text", "radius": 125, "align": "left", "baseline": "middle", "dx": 4, "fontWeight": "bold"},
+      "encoding": {
+        "theta": {"value": 0},             
+        "text": {"field": "PercentNum", "type": "quantitative", "format": ".1f"},
+        "color": {"value": "#6b7280"}      
+      }
+    },
+
+ 
+    {
+      "transform": [{"filter": "datum.AccessType === 'No access to a fast food outlet within 1500M (%)'"}],
+      "mark": {"type": "text", "radius": 125, "align": "right", "baseline": "middle", "dx": -4, "fontWeight": "bold"},
+      "encoding": {
+        "theta": {"value": 3.141592653589793}, 
+        "text": {"field": "PercentNum", "type": "quantitative", "format": ".1f"},
+        "color": {"value": "#6b7280"}          
+      }
+    }
+  ],
+
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"labelFontSize": 12, "titleFontSize": 13},
+    "legend": {"labelFontSize": 12, "titleFontSize": 13}
+  }
+}

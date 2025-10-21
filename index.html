@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FIT3179 – Obesity in Australia Visualisations</title>
 
-  
   <script src="https://unpkg.com/vega@5/build/vega.min.js?v=1"></script>
   <script src="https://unpkg.com/vega-lite@5/build/vega-lite.min.js?v=1"></script>
   <script src="https://unpkg.com/vega-embed@6/build/vega-embed.min.js?v=1"></script>
@@ -17,37 +16,28 @@
       font-family: system-ui, Arial, sans-serif;
       background: #fafafa;
     }
-    h1 {
-      margin: 0 0 8px;
-      text-align: center;
-    }
-    .subtitle {
-      text-align: center;
-      font-size: 1rem;
-      color: #374151;
-      margin-bottom: 24px;
+    h1 { margin: 0 0 8px; text-align: center; }
+    .subtitle { text-align: center; font-size: 1rem; color: #374151; margin-bottom: 16px; }
+    .info {
+      max-width: 1000px;
+      margin: 0 auto 12px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #111827;
+      box-shadow: 0 4px 12px rgba(0,0,0,.05);
+      line-height: 1.45;
+      font-size: 0.98rem;
     }
     .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 6px 16px rgba(0,0,0,.08);
-      margin: 16px auto;
-      max-width: 1000px;
+      background: #fff; border-radius: 12px; padding: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,.08); margin: 16px auto; max-width: 1000px;
     }
-    .chart {
-      min-height: 320px;
-    }
+    .chart { min-height: 320px; }
     .err {
-      display: none;
-      white-space: pre-wrap;
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: .9rem;
-      color: #9f1239;
-      background: #fff1f2;
-      border: 1px solid #fecdd3;
-      border-radius: 8px;
-      padding: 10px;
+      display: none; white-space: pre-wrap; font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: .9rem; color: #9f1239; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 8px; padding: 10px;
     }
   </style>
 </head>
@@ -55,10 +45,19 @@
   <h1>Obesity in Australia – Relevance to the Neighbourhood</h1>
   <div class="subtitle">Albert Tjugiarto — Student ID: 34726845</div>
 
+  <div class="info">
+    According to the Organisation for Economic Co-operation and Development (OECD, 2023), Australia ranks 10th out of 21 countries for the proportion of people aged 15 and over living with overweight or obesity. Around 64% of Australians fall into this category, which is higher than the OECD average of 59%.<br><br>
+    When focusing on obesity alone, Australia ranks equal fourth for men (32%), alongside Mexico and behind New Zealand (33%), Hungary (36%), and the United States (44%). Among women, Australia ranks ninth out of 22 countries, with 30% classified as obese — again above the OECD average of 26%.
+  </div>
+
   <div class="card" id="card1">
     <h2>Crude Obesity — States &amp; PHN Areas (Adults, 2022)</h2>
     <div id="vis1" class="chart"></div>
     <div id="err1" class="err"></div>
+  </div>
+
+  <div class="info">
+    The map shows the crude obesity including obesity type 1 until type 3. It shows the average calculation from every PHN area code and combine in every states in Australia. In 2022, after adjusting for age, the South Australia state area had the highest prevalence of overweight or obesity, with 4 in 5 adults (75.1%) living with overweight or obesity. The Northern Sydney area had the lowest prevalence, with just under half of adults living with overweight or obesity (64.5%).
   </div>
 
   <div class="card" id="card2">
@@ -73,10 +72,30 @@
     <div id="err3" class="err"></div>
   </div>
 
+  <div class="info">
+    Australia continues to face a significant public-health challenge from excess weight. In 2017–18, around 67% of adults and 24.9% of children were overweight or obese. High body mass accounted for 7% of the nation’s total disease and injury burden, second only to smoking. Key drivers include poor diet and low physical activity: low fruit and vegetable intake contributed 2% and 1.4% of the burden respectively, while physical inactivity contributed 5%. These risks and the prevalence of excess weight were generally higher in lower-socioeconomic areas and outside major cities, according to the National Health Survey.
+    <br><br>
+    Attention is increasingly turning to how the environment shapes these behaviours and outcomes. For the first time, the 2017–18 National Health Survey captured measures such as proximity to supermarkets and fast-food outlets. Using these data, this article examines how access to these outlets relates to physical activity, BMI, and consumption of fruit, vegetables, and sugar sweetened drinks. Other built environment features including access to public open space, amenities, population density, and commuting distance will be explored in future work. Analyses of supermarkets and fast-food outlets are presented separately here, noting that these venues are often located with other commercial destinations, which can affect results.
+  </div>
+
   <div class="card" id="card4">
     <h2>Access to Food Retail by Socio-Economic Disadvantage</h2>
     <div id="vis4" class="chart"></div>
     <div id="err4" class="err"></div>
+  </div>
+
+  <div class="info">
+    Most disadvantaged areas are the areas with the lowest IRSD (Index of Relative Socio-economic Disadvantage) scores. People in these areas are more likely to have lower incomes, lower educational attainment, higher unemployment, and jobs requiring fewer skills. As the graph going to the bottom its going higher until most advantaged areas where it's  areas with the highest IRSD scores. People are more likely to have higher incomes, better education, skilled occupations, and overall better access to resources.
+  </div>
+
+  <div class="card" id="card5">
+    <h2>Access to Food Retail by Socio-Economic Disadvantage (BMI)</h2>
+    <div id="vis5" class="chart"></div>
+    <div id="err5" class="err"></div>
+  </div>
+
+  <div class="info">
+    From both access to food retail by sosio-economic graph, conclude that people in more disadvantaged areas are more likely to live close (≤1500 m) to both supermarkets and fast-food places because there are more stores packed into those city neighbourhoods. Being closer doesn’t cause lower BMI, but within any group, people who live closer tend to have slightly lower obesity rates, likely because these areas are more walkable. These could simplify the reason of obesity in Australia.
   </div>
 
   <script>
@@ -89,24 +108,17 @@
 
     const bust = "?v=" + Date.now();
 
-    
     const spec1 = "js/phn_obesity_map.json" + bust;
     const spec2 = "js/age_sex_lines.json" + bust;
     const spec3 = "js/bmi_density.json" + bust;
     const spec4 = "js/access_to_food_retail_disadvantage.json" + bust;
+    const spec5 = "js/access_to_food_retail_bmi.json" + bust;
 
-    vegaEmbed("#vis1", spec1, { actions: false, renderer: "canvas" })
-      .catch(e => showErr("err1", e));
-
-    vegaEmbed("#vis2", spec2, { actions: false, renderer: "canvas" })
-      .catch(e => showErr("err2", e));
-
-    vegaEmbed("#vis3", spec3, { actions: false, renderer: "canvas" })
-      .catch(e => showErr("err3", e));
-
-    vegaEmbed("#vis4", spec4, { actions: false, renderer: "canvas" })
-      .catch(e => showErr("err4", e));
+    vegaEmbed("#vis1", spec1, { actions: false, renderer: "canvas" }).catch(e => showErr("err1", e));
+    vegaEmbed("#vis2", spec2, { actions: false, renderer: "canvas" }).catch(e => showErr("err2", e));
+    vegaEmbed("#vis3", spec3, { actions: false, renderer: "canvas" }).catch(e => showErr("err3", e));
+    vegaEmbed("#vis4", spec4, { actions: false, renderer: "canvas" }).catch(e => showErr("err4", e));
+    vegaEmbed("#vis5", spec5, { actions: false, renderer: "canvas" }).catch(e => showErr("err5", e));
   </script>
 </body>
 </html>
-
